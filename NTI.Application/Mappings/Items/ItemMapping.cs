@@ -11,6 +11,7 @@ namespace NTI.Application.Mappings.Items
         {
             CreateMap<Item, ItemDto>().ReverseMap();
             CreateMap<ItemInputModel, Item>().ReverseMap();
+            CreateMap<ItemDto, ItemInputModel>().ReverseMap();
         }
     }
 }

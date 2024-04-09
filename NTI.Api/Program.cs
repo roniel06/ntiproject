@@ -1,6 +1,6 @@
 ﻿using NTI.Api.Extensions;
 var builder = WebApplication.CreateBuilder(args);
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -9,6 +9,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureDbContext(builder);
 builder.Services.ConfigureRepositories();
+builder.Services.ConfigureAutoMapper();
+builder.Services.ConfigureServices();
+builder.Services.ConfigureFluentValidations();
 
 var app = builder.Build();
 
