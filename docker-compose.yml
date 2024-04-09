@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  web-api:
+    container_name: web-api
+    image: web-api
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - items.database
+
+  items.database:
+    container_name: items.database
+    image: postgres:16
+    volumes:
+      - ./.containers/items-db:/var/lib/postgresql/data
+    ports:
+      - 5433:5432

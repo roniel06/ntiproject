@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NTI.Domain\NTI.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Interfaces\" />
+    <None Remove="Interfaces\Repositories\" />
+    <None Remove="Interfaces\Services\" />
+    <None Remove="Interfaces\Repositories\Core\" />
+    <None Remove="Interfaces\Services\Core\" />
+    <None Remove="OperationResultDtos\" />
+    <None Remove="Mappings\" />
+    <None Remove="Dtos\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Interfaces\Repositories\" />
+    <Folder Include="Interfaces\Services\" />
+    <Folder Include="Interfaces\Repositories\Core\" />
+    <Folder Include="Interfaces\Services\Core\" />
+    <Folder Include="OperationResultDtos\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="Dtos\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+  </ItemGroup>
+</Project>
