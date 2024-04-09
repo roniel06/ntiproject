@@ -252,6 +252,7 @@ namespace NTI.Infrastructure.Repositories.Core
             var type = entity!.GetType();
             var prop = type.GetProperty("IsDeleted");
             prop?.SetValue(entity, true);
+            _dbSet.Entry(entity).State = EntityState.Modified;
             _dbSet.Update(entity);
             return await CommitAsync();
         }

@@ -9,7 +9,7 @@ namespace NTI.Infrastructure.Context
     {
         public ProjectDbContext(DbContextOptions<ProjectDbContext> options) : base(options)
         {
-            if (Database.IsRelational() && Database.GetAppliedMigrations().Any())
+            if (Database.IsRelational() && !Database.GetAppliedMigrations().Any())
             {
                 Database.Migrate();
             }
