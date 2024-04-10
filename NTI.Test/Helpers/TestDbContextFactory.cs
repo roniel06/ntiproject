@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using NTI.Infrastructure.Context;
 
 namespace NTI.Test.Helpers
@@ -11,7 +10,7 @@ namespace NTI.Test.Helpers
         {
             var options = new DbContextOptionsBuilder<ProjectDbContext>()
                .UseSqlite("DataSource=:memory:").Options;
-            
+
             var context = new ProjectDbContext(options);
             context.Database.OpenConnection();
             context.Database.EnsureCreated();

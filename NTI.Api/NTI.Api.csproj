@@ -8,6 +8,10 @@
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\net8.0\NTI.Api.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">

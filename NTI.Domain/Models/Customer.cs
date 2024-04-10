@@ -9,5 +9,6 @@ public class Customer : BaseModel
     public string? Phone { get; set; }
     public string? Email { get; set; }
     public bool IsActive { get; set; }
+    public IEnumerable<CustomerItem>? CustomerItems { get; set; }
 }
 

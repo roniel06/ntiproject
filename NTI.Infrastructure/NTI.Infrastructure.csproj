@@ -25,11 +25,15 @@
     <None Remove="Repositories\Core\" />
     <None Remove="Context\" />
     <None Remove="EFConfiguration\" />
+    <None Remove="EFConfiguration\ItemEFConfiguration\" />
+    <None Remove="EFConfiguration\CustomersEFConfiguration\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Core\" />
     <Folder Include="Context\" />
     <Folder Include="EFConfiguration\" />
+    <Folder Include="EFConfiguration\ItemEFConfiguration\" />
+    <Folder Include="EFConfiguration\CustomersEFConfiguration\" />
   </ItemGroup>
 </Project>

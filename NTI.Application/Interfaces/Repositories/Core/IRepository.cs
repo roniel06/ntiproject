@@ -24,10 +24,10 @@ namespace NTI.Application.Interfaces.Repositories.Core
     Action<Exception>? onException = null);
 
         Task<OperationResult<TDto>> CreateAsync(TInputModel entity,
-            Action? onRollBack = null, IDbContextTransaction? reuseTransaction = null, bool useContextTransaction = false);
+            Action? onRollBack = null);
 
         Task<OperationResult<TDto>> EditAsync(int id, TInputModel model,
-            Action? onRollBack = null, IDbContextTransaction? reuseTransaction = null, bool useContextTransaction = false);
+            Action? onRollBack = null);
 
         Task<OperationResult> SoftDeleteByIdAsync(int id);
     }
