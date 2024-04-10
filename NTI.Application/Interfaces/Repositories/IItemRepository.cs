@@ -8,6 +8,6 @@ namespace NTI.Application.Interfaces.Repositories
 {
     public interface IItemRepository: IRepository<Item, ItemDto, ItemInputModel>
     {
-        
+        Task<ItemDto?> GetItemByItemNumber(int itemNumber);
     }
 }

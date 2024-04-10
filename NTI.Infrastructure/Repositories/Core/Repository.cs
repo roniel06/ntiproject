@@ -9,13 +9,14 @@ using NTI.Application.OperationResultDtos;
 using NTI.Domain.Models.Core;
 using NTI.Infrastructure.Context;
 using NTI.Application.Extensions;
+using NTI.Application.InputModels.Core;
 
 namespace NTI.Infrastructure.Repositories.Core
 {
     public class Repository<TEntity, TDto, TInputModel> : IRepository<TEntity, TDto, TInputModel>
     where TEntity : BaseModel
     where TDto : class
-    where TInputModel : class
+    where TInputModel : class, IIdAble
     {
 
         public delegate Task<TResult> TransactionAction<TResult>(IDbContextTransaction transaction) where TResult : class;
@@ -78,6 +79,7 @@ namespace NTI.Infrastructure.Repositories.Core
                 result.SetSucceeded(mapped);
                 return result;
             }
+            result.SetCode(404);
             return result.AddError($"No Entity Was Found With Id: {id}");
         }
 
@@ -107,12 +109,13 @@ namespace NTI.Infrastructure.Repositories.Core
         {
             var result = OperationResult<IEnumerable<TDto>>.Failed();
             var mapped = await _dbSet.ProjectTo<TDto>(_mapper.ConfigurationProvider).ToListAsync();
-            if (mapped is not null)
+            result.SetSucceeded(mapped);
+            if (mapped is null)
             {
-                result.SetSucceeded(mapped);
-                return result;
+                result.SetCode(204);
             }
-            return result.AddError("No Entities were Found");
+            return result;
+
         }
 
         /// <summary>
@@ -182,62 +185,42 @@ namespace NTI.Infrastructure.Repositories.Core
             }
         }
 
-        public async Task<OperationResult<TDto>> CreateAsync(TInputModel entity, Action? onRollBack = null, IDbContextTransaction? reuseTransaction = null, bool useContextTransaction = false)
+        public async Task<OperationResult<TDto>> CreateAsync(TInputModel entity, Action? onRollBack = null)
         {
             var opResult = OperationResult<TDto>.Failed();
 
-            if (reuseTransaction == null && useContextTransaction)
-                reuseTransaction = GetCurrentTransaction();
-
-            return await ExecuteTransactionAsync(async (transaction) =>
+            var dbEntity = Add(entity);
+            var result = await CommitAsync();
+            if (result.Succeeded)
             {
-                var dbEntity = Add(entity);
-                var result = await CommitAsync(transaction);
-                if (result.Succeeded)
-                {
-                    var mapped = _mapper.Map<TDto>(dbEntity);
-                    opResult.SetSucceeded(mapped);
-                    return opResult;
-                }
-                else
-                {
-                    onRollBack?.Invoke();
-                    opResult.SetFrom(result);
-                    return opResult.AddError("Error while saving the entity");
-                }
-            }, (e) => opResult.AddError(e.GetError()));
+                var mapped = _mapper.Map<TDto>(dbEntity);
+                opResult.SetSucceeded(mapped);
+                return opResult;
+            }
+            else
+            {
+                onRollBack?.Invoke();
+                opResult.SetFrom(result);
+                return opResult.AddError("Error while saving the entity");
+            }
         }
 
-        public async Task<OperationResult<TDto>> EditAsync(int id, TInputModel model, Action? onRollBack = null, IDbContextTransaction? reuseTransaction = null, bool useContextTransaction = false)
+        public async Task<OperationResult<TDto>> EditAsync(int id, TInputModel model, Action? onRollBack = null)
         {
             var opResult = OperationResult<TDto>.Failed();
-            if (reuseTransaction == null && useContextTransaction)
-            {
-                reuseTransaction = GetCurrentTransaction();
-            }
 
-            return await ExecuteTransactionAsync(async transaction =>
-            {
-                var savedEntity = await _dbSet.FindAsync(id);
-                if (savedEntity is null) return opResult;
-                TEntity entityEditted = UpdateEntity(model, savedEntity);
+            var savedEntity = await _dbSet.FindAsync(id);
+            if (savedEntity is null) return opResult;
+            TEntity entityEditted = UpdateEntity(model, savedEntity);
 
-                var result = await CommitAsync(transaction, automaticRollback: onRollBack == null);
-                if (!result.Succeeded)
-                {
-                    onRollBack?.Invoke();
-                    return opResult.SetFrom(result);
-                }
-
-                if (reuseTransaction == null) transaction.Commit();
-                var mapped = _mapper.Map<TDto>(entityEditted);
-                return OperationResult<TDto>.Success(mapped);
-            }, error =>
+            var result = await CommitAsync();
+            if (!result.Succeeded)
             {
-                var errorResult = error.GetError();
                 onRollBack?.Invoke();
-                return opResult.AddError(errorResult);
-            }, reuseTransaction);
+                return opResult.SetFrom(result);
+            }
+            var mapped = _mapper.Map<TDto>(entityEditted);
+            return OperationResult<TDto>.Success(mapped);
         }
 
         /// <summary>
@@ -262,28 +245,7 @@ namespace NTI.Infrastructure.Repositories.Core
         {
             return _context.Database.CurrentTransaction;
         }
-        private async Task<TResult> ExecuteTransactionAsync<TResult>(TransactionAction<TResult> execution, ErrorAction<TResult> onError,
-              IDbContextTransaction? reuseTransaction = null) where TResult : class
-        {
-            // Local function
-            async Task<TResult> ExecuteTransaction(IDbContextTransaction transaction)
-            {
-                try { return await execution(transaction); }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    return onError(e);
-                }
-            }
 
-            if (reuseTransaction != null)
-                return await ExecuteTransaction(reuseTransaction);
-            else
-            {
-                await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
-                return await ExecuteTransaction(transaction);
-            }
-        }
         private TEntity UpdateEntity(TInputModel entity, TEntity savedEntity)
         {
             _dbSet.Entry(savedEntity).CurrentValues.SetValues(entity);

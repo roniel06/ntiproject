@@ -3,17 +3,12 @@ using AutoFixture;
 using Moq;
 using NTI.Application.InputModels.Items;
 using NTI.Application.Services;
-using NTI.Infrastructure.Repositories;
 using AutoMapper;
 using NTI.Application.Mappings.Items;
 using FluentAssertions;
 using NTI.Application.OperationResultDtos;
 using NTI.Application.Dtos;
 using NTI.Application.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper.QueryableExtensions;
-
-
 
 namespace NTI.Test.Systems.Services
 {
@@ -63,7 +58,7 @@ namespace NTI.Test.Systems.Services
             var item = fixture.Build<ItemInputModel>().With(x => x.Id, 0).Create();
             var itemDto = _mapper.Map<ItemDto>(item);
 
-            _itemsRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<ItemInputModel>(), null, null, false))
+            _itemsRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<ItemInputModel>(), null))
                 .ReturnsAsync(OperationResult<ItemDto>.Success(itemDto));
 
             // Act
@@ -85,18 +80,20 @@ namespace NTI.Test.Systems.Services
         {
             // Arrange 
             var fixture = new Fixture();
+            int id = fixture.Create<int>();
             var item = fixture.Build<ItemInputModel>()
+            .With(x => x.Id, id)
                 .With(x => x.DefaultPrice, 20)
                 .With(x => x.Description, "Initial Description")
                 .With(x => x.IsActive, true)
                 .Create();
             var itemDto = _mapper.Map<ItemDto>(item);
 
-            _itemsRepositoryMock.Setup(x => x.EditAsync(item.Id, It.IsAny<ItemInputModel>(), null, null, false))
+            _itemsRepositoryMock.Setup(x => x.EditAsync(id, It.IsAny<ItemInputModel>(), null))
                 .ReturnsAsync(OperationResult<ItemDto>.Success(itemDto));
 
             // Act
-            var result = await _sut.UpdateAsync(item);
+            var result = await _sut.UpdateAsync(id, item);
 
             // Assert
             result.Should().NotBeNull();
@@ -118,10 +115,7 @@ namespace NTI.Test.Systems.Services
             var itemNumber = fixture.Create<int>();
             var item = fixture.Build<ItemDto>().With(x => x.ItemNumber, itemNumber).Create();
 
-            _itemsRepositoryMock.Setup(x =>
-                    x.GetQueryable()
-                    .ProjectTo<ItemDto>(_mapper.ConfigurationProvider)
-                    .SingleOrDefaultAsync(x => x.ItemNumber == itemNumber, default))
+            _itemsRepositoryMock.Setup(x => x.GetItemByItemNumber(itemNumber))
                 .ReturnsAsync(item);
 
             // Act
@@ -133,6 +127,34 @@ namespace NTI.Test.Systems.Services
             result.IsSuccessfulWithNoErrors.Should().BeTrue();
             result.Payload.Should().NotBeNull();
             result.Payload.ItemNumber.Should().Be(itemNumber);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldReturnSuccessWithDeletedEntityDto()
+        {
+            // Arrange 
+            var fixture = new Fixture();
+            var id = fixture.Create<int>();
+            var item = fixture.Build<ItemDto>().With(x => x.Id, id).Create();
+
+            _itemsRepositoryMock.Setup(x => x.SoftDeleteByIdAsync(id))
+                .ReturnsAsync(OperationResult.Success());
+
+            _itemsRepositoryMock.Setup(x => x.GetByIdAsync(id))
+                .ReturnsAsync(OperationResult<ItemDto>.Failed("Not found").SetCode(404));
+
+            // Act
+            var result = await _sut.DeleteAsync(id);
+            var searchAfter = await _sut.GetByIdAsync(id);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<OperationResult>();
+            result.IsSuccessfulWithNoErrors.Should().BeTrue();
+            searchAfter.IsSuccessfulWithNoErrors.Should().BeFalse();
+            searchAfter.Code.Should().Be(404);
+
+
         }
     }
 }

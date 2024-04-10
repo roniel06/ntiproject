@@ -34,6 +34,11 @@ namespace NTI.Application.Services
             return opResult.AddError("Item cannot be null");
         }
 
+        public async Task<OperationResult> DeleteAsync(int id)
+        {
+            return await _itemRepository.SoftDeleteByIdAsync(id);
+        }
+
         public Task<OperationResult<IEnumerable<ItemDto>>> GetAllAsync()
             => _itemRepository.GetAllAsync();
 
@@ -46,9 +51,7 @@ namespace NTI.Application.Services
             if (itemNumber > 0)
             {
                 var item = await _itemRepository
-                                        .GetQueryable()
-                                        .ProjectTo<ItemDto>(_mapper.ConfigurationProvider)
-                                        .FirstOrDefaultAsync(x => x.ItemNumber == itemNumber);
+                                        .GetItemByItemNumber(itemNumber);
                 if (item is not null)
                 {
                     return opResult.SetSucceeded(item);
@@ -57,12 +60,13 @@ namespace NTI.Application.Services
             return opResult.AddError("Item not found");
         }
 
-        public async Task<OperationResult<ItemDto>> UpdateAsync(ItemInputModel item)
+        public async Task<OperationResult<ItemDto>> UpdateAsync(int id, ItemInputModel item)
         {
             var opResult = OperationResult<ItemDto>.Failed();
             if (item is not null)
             {
-                return await _itemRepository.EditAsync(item.Id, item);
+                item.Id ??= id;
+                return await _itemRepository.EditAsync(id, item);
             }
             return opResult.AddError("Item cannot be null");
         }

@@ -11,7 +11,7 @@ using NTI.Application.Mappings.Items;
 
 namespace NTI.Test.Systems.Repositories
 {
-    public class ItemsRepositoryTest
+    public class ItemsRepositoryTest : IDisposable
     {
         private readonly ItemsRepository _sut;
         private readonly ProjectDbContext _dbContext;
@@ -20,6 +20,7 @@ namespace NTI.Test.Systems.Repositories
 
         public ItemsRepositoryTest()
         {
+            _dbContext = TestDbContextFactory.Create();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -27,7 +28,6 @@ namespace NTI.Test.Systems.Repositories
             });
 
             _mapper = config.CreateMapper();
-            _dbContext = TestDbContextFactory.Create();
             _sut = new ItemsRepository(_dbContext, _mapper);
 
 
@@ -80,7 +80,7 @@ namespace NTI.Test.Systems.Repositories
             item.Description = "Edited Description";
             item.DefaultPrice = 30;
             item.IsActive = false;
-            var editedResult = await _sut.EditAsync(item.Id, item);
+            var editedResult = await _sut.EditAsync(item.Id ?? 0, item);
 
             // Assert
             editedResult.Should().NotBeNull();
@@ -108,7 +108,7 @@ namespace NTI.Test.Systems.Repositories
             await _sut.AddAsync(item);
             await _sut.CommitAsync();
 
-            var created = await _sut.GetByIdAsync(item.Id);
+            var created = await _sut.GetByIdAsync(item.Id ?? 0);
             var deletedResult = await _sut.SoftDeleteByIdAsync(created.Payload.Id);
 
             // Assert
@@ -153,7 +153,7 @@ namespace NTI.Test.Systems.Repositories
             await _sut.AddAsync(item);
             await _sut.CommitAsync();
 
-            var created = await _sut.GetByIdAsync(item.Id);
+            var created = await _sut.GetByIdAsync(item.Id ?? 0);
 
             // Assert
             created.Should().NotBeNull();

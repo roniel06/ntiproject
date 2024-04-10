@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.3" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
@@ -34,6 +35,7 @@
     <ProjectReference Include="..\NTI.Infrastructure\NTI.Infrastructure.csproj" />
     <ProjectReference Include="..\NTI.Application\NTI.Application.csproj" />
     <ProjectReference Include="..\NTI.Domain\NTI.Domain.csproj" />
+    <ProjectReference Include="..\NTI.Api\NTI.Api.csproj" />
   </ItemGroup>
 
 </Project>

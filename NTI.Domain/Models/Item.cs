@@ -10,5 +10,6 @@ public class Item : BaseModel
     public decimal DefaultPrice { get; set; }
     public ItemCategory Category { get; set; }
     public bool IsActive { get; set; }
+    public IEnumerable<CustomerItem> CustomerItems { get; set; }
 }
 
