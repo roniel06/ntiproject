@@ -45,7 +45,8 @@ namespace NTI.Test.Systems.Controllers
         public async Task GetCustomers_ReturnsOkWithNoRecords()
         {
             // Arrange
-            _customerService.Setup(x => x.GetAllAsync()).ReturnsAsync(OperationResult<IEnumerable<CustomerDto>>.Success(new List<CustomerDto>()));
+            var empty = new List<CustomerDto>();
+            _customerService.Setup(x => x.GetAllAsync()).ReturnsAsync(OperationResult<IEnumerable<CustomerDto>>.Success(empty));
 
             // Act
             var result = (OkObjectResult)await _sut.GetAll();

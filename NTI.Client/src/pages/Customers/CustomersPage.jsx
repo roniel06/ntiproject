@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { CustomersService } from '../../services/customersService/CustomersService'
 import DataTable from "react-data-table-component"
 import { useToast } from '@chakra-ui/react'
+import { wrap } from 'framer-motion'
 
 
 const CustomersPage = () => {
@@ -14,7 +15,8 @@ const CustomersPage = () => {
         {
             name: "Id",
             selector: row => row.id,
-            sortable: true
+            sortable: true,
+            grow:.5
         },
         {
             name: "Name",
@@ -34,13 +36,15 @@ const CustomersPage = () => {
             selector: row => row.email
         },
         {
-            name:"Status",
+            name: "Status",
             selector: row => row.isActive ? "Active" : "Inactive"
         },
         {
             name: "Options",
+            grow:2,   
             cell: row => (
                 <>
+                    <button className='bg-green-400 m-2 p-3 text-white text-sm rounded' onClick={() => navigate(`/customers/${row.id}/addItems`)}>Items</button>
                     <button className="bg-orange-400 m-2 p-3 text-white text-sm rounded" onClick={() => navigate(`/customers/edit/${row.id}`)}>Edit</button>
                     <button onClick={(e) => {
                         if (!confirm("Are you sure you want to delete this record?")) {
@@ -48,6 +52,7 @@ const CustomersPage = () => {
                         }
                         handleOnDelete(row.id);
                     }} className="bg-red-600 p-3 text-white text-sm rounded" type='button'>Delete</button>
+
                 </>
             )
         }

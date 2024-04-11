@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HiMenuAlt3 } from "react-icons/hi";
+import { HiMenuAlt3, HiInbox } from "react-icons/hi";
 import { MdOutlineDashboard, MdLibraryBooks } from "react-icons/md";
 import { FiUsers, FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -10,7 +10,7 @@ const SideBar = () => {
     const menus = [
         { name: "Dashboard", link: "/", icon: MdOutlineDashboard },
         {
-            name: "Items", link: "/", icon: MdLibraryBooks, subMenus: [
+            name: "Items", link: "/", icon: HiInbox, subMenus: [
                 { name: "List of Items", link: "/items" },
             ]
         },
@@ -19,6 +19,11 @@ const SideBar = () => {
                 { name: "List of Customers", link: "/customers" }
             ]
         },
+        {
+            name: "Reports", link: "/", icon: MdLibraryBooks, subMenus: [
+                { name: "Reports", link: "/reports" }
+            ]
+        }
 
     ];
     const [open, setOpen] = useState(true);
