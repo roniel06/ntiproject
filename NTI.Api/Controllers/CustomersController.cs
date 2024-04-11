@@ -37,9 +37,9 @@ namespace NTI.Api.Controllers
             var result = await _customersService.GetAllAsync();
             if (result.Succeeded)
             {
-                return Ok(result.Payload);
+                return Ok(result);
             }
-            return BadRequest(result.Errors);
+            return BadRequest(result);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace NTI.Api.Controllers
             var result = await _customersService.GetByIdAsync(id);
             if (result.Succeeded)
             {
-                return Ok(result.Payload);
+                return Ok(result);
             }
             return BadRequest(result.Errors);
         }
@@ -73,7 +73,7 @@ namespace NTI.Api.Controllers
             var result = await _customersService.CreateAsync(inputModel);
             if (result.Succeeded)
             {
-                return Ok(result.Payload);
+                return Ok(result);
             }
             return BadRequest(result.Errors);
         }
@@ -93,7 +93,7 @@ namespace NTI.Api.Controllers
             var result = await _customersService.UpdateAsync(id, inputModel);
             if (result.Succeeded)
             {
-                return Ok(result.Payload);
+                return Ok(result);
             }
             return BadRequest(result.Errors);
         }
