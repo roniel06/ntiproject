@@ -164,6 +164,8 @@ public class OperationResult<T> : OperationResult
 
     public OperationResult<T> SetSucceeded(T payload)
     {
+        Code = 200;
+        StatusCode = HttpStatusCode.OK;
         Succeeded = true;
         Payload = payload;
         return this;

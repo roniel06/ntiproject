@@ -29,6 +29,7 @@ namespace NTI.Api.Extensions
         {
             services.AddScoped<IItemRepository, ItemsRepository>();
             services.AddScoped<ICustomersRepository, CustomersRepository>();
+            services.AddScoped<ICustomerItemsRepository, CustomerItemsRepository>();
             return services;
         }
 
@@ -41,6 +42,7 @@ namespace NTI.Api.Extensions
         {
             services.AddScoped<IItemsService, ItemsService>();
             services.AddScoped<ICustomersService, CustomersService>();
+            services.AddScoped<ICustomerItemService, CustomerItemsService>();
             return services;
         }
 
@@ -142,7 +144,7 @@ namespace NTI.Api.Extensions
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
-                builder.AllowAnyOrigin()
+                builder.WithOrigins("http://localhost:5173")
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));

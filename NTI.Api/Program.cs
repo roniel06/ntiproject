@@ -14,6 +14,7 @@ builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureServices();
 builder.Services.ConfigureFluentValidations();
 builder.Services.ConfigureSwaggerDoc();
+builder.Services.ConfigureCors();
 
 var app = builder.Build();
 
@@ -22,8 +23,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    // app.ApplyMigrations();
+    app.ApplyMigrations();
 }
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 

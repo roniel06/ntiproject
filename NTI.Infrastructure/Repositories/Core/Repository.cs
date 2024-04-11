@@ -10,6 +10,7 @@ using NTI.Domain.Models.Core;
 using NTI.Infrastructure.Context;
 using NTI.Application.Extensions;
 using NTI.Application.InputModels.Core;
+using System.Net;
 
 namespace NTI.Infrastructure.Repositories.Core
 {
@@ -80,6 +81,7 @@ namespace NTI.Infrastructure.Repositories.Core
                 return result;
             }
             result.SetCode(404);
+            result.SetStatusCode(HttpStatusCode.NotFound);
             return result.AddError($"No Entity Was Found With Id: {id}");
         }
 
@@ -110,9 +112,10 @@ namespace NTI.Infrastructure.Repositories.Core
             var result = OperationResult<IEnumerable<TDto>>.Failed();
             var mapped = await _dbSet.ProjectTo<TDto>(_mapper.ConfigurationProvider).ToListAsync();
             result.SetSucceeded(mapped);
-            if (mapped is null)
+            if (!mapped.Any())
             {
                 result.SetCode(204);
+                result.SetStatusCode(HttpStatusCode.NoContent);
             }
             return result;
 

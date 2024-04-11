@@ -45,15 +45,16 @@ namespace NTI.Test.Systems.Controllers
         public async Task GetCustomers_ReturnsOkWithNoRecords()
         {
             // Arrange
-            _customerService.Setup(x => x.GetAllAsync()).ReturnsAsync(OperationResult<IEnumerable<CustomerDto>>.Success(new List<CustomerDto>()));
+            var empty = new List<CustomerDto>();
+            _customerService.Setup(x => x.GetAllAsync()).ReturnsAsync(OperationResult<IEnumerable<CustomerDto>>.Success(empty));
 
             // Act
             var result = (OkObjectResult)await _sut.GetAll();
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
-            var dto = result.Value.Should().BeAssignableTo<IEnumerable<CustomerDto>>().Subject;
-            dto.Count().Should().Be(0);
+            var dto = result.Value.Should().BeAssignableTo<OperationResult<IEnumerable<CustomerDto>>>().Subject;
+            dto.Payload.Count().Should().Be(0);
         }
 
         [Fact]
@@ -88,11 +89,11 @@ namespace NTI.Test.Systems.Controllers
             // Assert
             Assert.IsType<OkObjectResult>(result);
 
-            var dto = result.Value.Should().BeAssignableTo<CustomerDto>().Subject;
-            dto.Name.Should().Be(ret.Payload.Name);
-            dto.LastName.Should().Be(ret.Payload.LastName);
-            dto.Phone.Should().Be(ret.Payload.Phone);
-            dto.Email.Should().Be(ret.Payload.Email);
+            var dto = result.Value.Should().BeAssignableTo<OperationResult<CustomerDto>>().Subject;
+            dto.Payload.Name.Should().Be(ret.Payload.Name);
+            dto.Payload.LastName.Should().Be(ret.Payload.LastName);
+            dto.Payload.Phone.Should().Be(ret.Payload.Phone);
+            dto.Payload.Email.Should().Be(ret.Payload.Email);
         }
 
         [Fact]
@@ -111,12 +112,12 @@ namespace NTI.Test.Systems.Controllers
             // Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<OkObjectResult>();
-            var dto = result.Value.Should().BeAssignableTo<CustomerDto>().Subject;
-            dto.Id.Should().Be(customer.Id);
-            dto.Name.Should().Be(customer.Name);
-            dto.LastName.Should().Be(customer.LastName);
-            dto.Phone.Should().Be(customer.Phone);
-            dto.Email.Should().Be(customer.Email);
+            var dto = result.Value.Should().BeAssignableTo<OperationResult<CustomerDto>>().Subject;
+            dto.Payload.Id.Should().Be(customer.Id);
+            dto.Payload.Name.Should().Be(customer.Name);
+            dto.Payload.LastName.Should().Be(customer.LastName);
+            dto.Payload.Phone.Should().Be(customer.Phone);
+            dto.Payload.Email.Should().Be(customer.Email);
         }
 
         [Fact]
