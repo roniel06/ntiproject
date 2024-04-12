@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CustomersService } from '../../services/customersService/CustomersService'
 import DataTable from "react-data-table-component"
-import { useToast } from '@chakra-ui/react'
-import { wrap } from 'framer-motion'
+import {Spinner} from "@chakra-ui/react"
 
 
 const CustomersPage = () => {
@@ -100,6 +99,8 @@ const CustomersPage = () => {
                     columns={columns}
                     data={customers}
                     pagination
+                    progressPending={customers.length === 0}
+                    progressComponent={<Spinner thickness='5px' speed='0.65s' emptyColor='gray.200' color='blue.500' size="xl" />}
 
                 />
             </div>

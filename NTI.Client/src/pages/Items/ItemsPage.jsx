@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ItemsService } from '../../services/itemsService/ItemsService'
 import DataTable from "react-data-table-component"
-import { useToast } from '@chakra-ui/react'
+import { useToast, Spinner } from '@chakra-ui/react'
 import { categoryEnum } from '../../utils/enums/categoryEnum'
 
 const ItemsPage = () => {
@@ -104,6 +104,9 @@ const ItemsPage = () => {
           columns={columns}
           data={items}
           pagination
+          progressPending={items.length === 0}
+          progressComponent={<Spinner thickness='5px' speed='0.65s' emptyColor='gray.200' color='blue.500' size="xl" />}
+
         />
       </div>
     </>
