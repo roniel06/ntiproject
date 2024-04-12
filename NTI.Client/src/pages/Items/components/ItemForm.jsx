@@ -64,12 +64,17 @@ const ItemForm = ({ item, onSubmit }) => {
                                     <Field id="isActive" name='isActive' type="checkbox" checked={values.isActive} onChange={handleChange} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 ml-2 mt-4" />
                                 </div>
                             </div>
+                            <button 
+                            type='button' 
+                            className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full mt-5'
+                            onClick={() => window.history.back()}
+                            > 
+                            Go Back</button>
+
                             <button type='submit' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-5'>
                                 {
                                     item.id > 0 ? "Update" : "Create"
                                 }
-
-
                             </button>
                         </div>
                     </form>

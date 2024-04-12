@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box } from '@chakra-ui/react'
+import { Box, Spinner } from '@chakra-ui/react'
 import DataTable from "react-data-table-component"
 import { CustomersService } from '../../services/customersService/CustomersService'
 
 const CustomersWithExpensiveItems = () => {
 
     const [data, setData] = useState([]);
-    const navigate = useNavigate();
-
 
     const columns = [
         {
@@ -52,6 +50,8 @@ const CustomersWithExpensiveItems = () => {
                     data={data}
                     pagination
                     highlightOnHover
+                    progressPending={data.length === 0}
+                    progressComponent={<Spinner thickness='5px' speed='0.65s' emptyColor='gray.200' color='blue.500' size="xl" />}
                 />
             </Box>
         </>

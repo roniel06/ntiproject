@@ -19,20 +19,37 @@ namespace NTI.Infrastructure.Repositories
         public async Task<OperationResult<IEnumerable<CustomerWithExpensiveItemDto>>> GetByCustomersWithExpensiveItems()
         {
             var opResult = OperationResult<IEnumerable<CustomerWithExpensiveItemDto>>.Failed();
-            var result = await GetQueryable()
-                         .Include(x => x.CustomerItems)
-                             .ThenInclude(x => x.Item)
-                        .ToListAsync();
-            var customerWithExpensiveItemDtos = result.Select(x => new CustomerWithExpensiveItemDto
+            var customers = await GetQueryable()
+                             .Include(x => x.CustomerItems)
+                                 .ThenInclude(x => x.Item)
+                            .ToListAsync();
+
+            var customerWithExpensiveItemDtos = customers.Select(customer =>
             {
-                CustomerId = x.Id,
-                CustomerName = x.Name,
-                CustomerLastName = x.LastName,
-                CustomerItemId = x.CustomerItems.OrderByDescending(x => x.Item.DefaultPrice).FirstOrDefault().Id,
-                ItemDescription = x.CustomerItems.OrderByDescending(x => x.Item.DefaultPrice).FirstOrDefault().Item.Description,
-                Price = x.CustomerItems.OrderByDescending(x => x.Item.DefaultPrice).FirstOrDefault().Price == 0 ? x.CustomerItems.OrderByDescending(x => x.Item.DefaultPrice).FirstOrDefault().Item.DefaultPrice : x.CustomerItems.OrderByDescending(x => x.Item.DefaultPrice).FirstOrDefault().Price,
-                Quantity = x.CustomerItems.OrderByDescending(x => x.Item.DefaultPrice).FirstOrDefault().Quantity
-            });
+                if(customer.CustomerItems == null || customer.CustomerItems.Count() == 0)
+                {
+                    return null;
+                }
+                var mostExpensiveItem = customer.CustomerItems.OrderByDescending(x => x.Item.DefaultPrice).FirstOrDefault();
+
+                if (mostExpensiveItem == null)
+                {
+                    return null;
+                }
+
+                return new CustomerWithExpensiveItemDto
+                {
+                    CustomerId = customer.Id,
+                    CustomerName = customer.Name,
+                    CustomerLastName = customer.LastName,
+                    CustomerItemId = mostExpensiveItem.Id,
+                    ItemDescription = mostExpensiveItem.Item?.Description,
+                    Price = (mostExpensiveItem.Price == 0 ? mostExpensiveItem.Item?.DefaultPrice : mostExpensiveItem.Price) ?? 0,
+                    Quantity = mostExpensiveItem.Quantity
+                };
+            })
+            .Where(x => x != null);
+
             return opResult.SetSucceeded(customerWithExpensiveItemDtos);
         }
 
