@@ -8,6 +8,7 @@ import CreateCustomerPage from "../pages/Customers/CreateCustomerPage";
 import EditCustomerPage from "../pages/Customers/EditCustomerPage";
 import AddCustomerItems from "../pages/Customers/AddCustomerItems";
 import ReportsPage from "../pages/Reports/ReportsPage";
+import CustomersWithExpensiveItems from "../pages/Reports/CustomersWithExpensiveItems";
 
 const router = createBrowserRouter([
     {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: "/reports",
                 element: <ReportsPage />
+            },
+            {
+                path: "/reports/expensive",
+                element: <CustomersWithExpensiveItems />
             }
 
         ]

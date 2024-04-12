@@ -23,7 +23,7 @@ const CreateItemsPage = () => {
             })
             setTimeout(() => {
                 navigate("/items")
-            }, 2000)
+            }, 500)
             return ;
         }
         toast({

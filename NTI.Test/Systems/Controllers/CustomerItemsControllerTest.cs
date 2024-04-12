@@ -154,5 +154,28 @@ namespace NTI.Test.Systems.Controllers
             var dto = result.Value.Should().BeAssignableTo<OperationResult<CustomerItemsDto>>().Subject;
             dto.Payload.Should().BeEquivalentTo(customerItem);
         }
+
+        [Fact]
+        public async Task GetByItemNumberRange_ShouldReturnOk_WhenCustomerItemsExist()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var customerItems = fixture.Build<CustomerItemsDto>()
+            .Without(x=> x.Customer)
+            .Without(x=> x.Item).CreateMany(3);
+
+            _mockCustomerItemService.Setup(x => x.GetByItemNumberRange(It.IsAny<int>(), It.IsAny<int>()))
+                .ReturnsAsync(OperationResult<IEnumerable<CustomerItemsDto>>.Success(customerItems));
+
+            // Act
+            var result = (OkObjectResult)await _sut.GetByItemNumberRange(1, 3);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<OkObjectResult>();
+            var dto = result.Value.Should().BeAssignableTo<OperationResult<IEnumerable<CustomerItemsDto>>>().Subject;
+            dto.Payload.Should().HaveCount(3);
+            dto.Payload.Should().BeEquivalentTo(customerItems);
+        }
     }
 }

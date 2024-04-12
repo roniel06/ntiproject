@@ -116,5 +116,22 @@ namespace NTI.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Get customer items by item number range
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        [HttpGet("report/{from}/{to}")]
+        public async Task<IActionResult> GetByItemNumberRange([Required] int from, [Required] int to)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _customerItemService.GetByItemNumberRange(from, to);
+            return Ok(result);
+        }
+
     }
 }

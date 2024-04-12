@@ -14,5 +14,13 @@ namespace NTI.Application.Interfaces.Services
         Task<OperationResult> DeleteAsync(int id);
 
         Task<OperationResult<IEnumerable<CustomerItemsDto>>> GetByCustomerIdAsync(int customerId);
+
+        /// <summary>
+        /// Gets the customer items by the item number
+        /// </summary>
+        /// <param name="from">from item number</param>
+        /// <param name="to">to item number</param>
+        /// <returns></returns>
+        Task<OperationResult<IEnumerable<CustomerItemsDto>>> GetByItemNumberRange(int from, int to);
     }
 }

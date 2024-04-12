@@ -1,10 +1,8 @@
 import axios from "axios"
 
-
 const api = axios.create({
     baseURL: import.meta.env.VITE_REACT_API_URL
 })
-
 
 const get = async (url, params = {}) => {
     try {
@@ -16,8 +14,6 @@ const get = async (url, params = {}) => {
         throw error
     }
 }
-
-
 
 const post = async (url, data) => {
     try {
@@ -39,7 +35,6 @@ const put = async (url, data = {}) => {
         throw error;
     }
 };
-
 
 const remove = async (url) => {
     try {

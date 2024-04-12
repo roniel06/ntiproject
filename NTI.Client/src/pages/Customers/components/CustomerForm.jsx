@@ -5,12 +5,10 @@ import { customersValidationSchema } from '../../../utils/validationSchemas/cust
 
 const CustomerForm = ({ customer, onSubmit }) => {
 
-
     const handleOnSubmit = (values) => {
         onSubmit(values);
     }
     return (
-
         <>
             <Formik
                 validationSchema={customersValidationSchema}
@@ -65,17 +63,12 @@ const CustomerForm = ({ customer, onSubmit }) => {
                                 {
                                     customer.id > 0 ? "Update" : "Create"
                                 }
-
-
                             </button>
                         </div>
                     </form>
                 )}
-
             </Formik>
-
         </>
-
     )
 }
 

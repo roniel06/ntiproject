@@ -44,6 +44,11 @@ namespace NTI.Application.Services
             return opResult.AddError("The id should be greater than 0");
         }
 
+        public Task<OperationResult<IEnumerable<CustomerItemsDto>>> GetByItemNumberRange(int from, int to)
+        {
+            return _repository.GetByItemNumberRange(from, to);
+        }
+
         public async Task<OperationResult<CustomerItemsDto>> UpdateAsync(int id, CustomerItemInputModel inputModel)
         {
             var opResult = OperationResult<CustomerItemsDto>.Failed();

@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NTI.Application.InputModels.Customers;
 using NTI.Application.Interfaces.Services;
 
@@ -98,7 +93,6 @@ namespace NTI.Api.Controllers
             return BadRequest(result.Errors);
         }
 
-
         /// <summary>
         /// Deletes a customer.
         /// </summary>
@@ -108,6 +102,21 @@ namespace NTI.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _customersService.DeleteAsync(id);
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Errors);
+        }
+
+        /// <summary>
+        /// Gets the customers with expensive items.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("expensive-items")]
+        public async Task<IActionResult> GetByCustomersWithExpensiveItems()
+        {
+            var result = await _customersService.GetByCustomersWithExpensiveItems();
             if (result.Succeeded)
             {
                 return Ok(result);

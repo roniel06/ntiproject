@@ -257,6 +257,50 @@ namespace NTI.Test.Systems.Repositories
             result.Payload.Should().NotBeEmpty();
             result.Payload.Should().HaveCount(1);
         }
+
+
+        [Fact]
+        public async Task GetCustomerItemsByItemNumberRange_ShouldReturnAssignedCustomerItems_WithinRange()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var random = new Random();
+            var items = fixture.Build<Item>()
+                              .Without(x => x.Id)
+                              .Without(x => x.CustomerItems)
+                              .With(i => i.ItemNumber, random.Next(1, 1000))
+                              .CreateMany(5);
+
+            // Create a set of items
+            foreach (var item in items)
+            {
+                await _dbContext.Items.AddRangeAsync(item);
+            }
+            await _dbContext.SaveChangesAsync();
+
+            // Create a set of customer items
+            var customerInput = fixture.Build<CustomerItemInputModel>()
+                                    .With(c => c.CustomerId, customerId)
+                                    .CreateMany(5);
+
+            int minItemNumber = items.Min(x => x.ItemNumber);
+            int maxItemNumber = items.Max(x => x.ItemNumber);
+            int idx = 0;
+            foreach (var customerItem in customerInput)
+            {
+                // Assign the Item id to the customer item
+                customerItem.ItemId = items.ElementAt(idx).Id;
+                await _sut.CreateAsync(customerItem);
+            }
+
+            // Act
+            var result = await _sut.GetByItemNumberRange(minItemNumber, maxItemNumber);
+
+            // Assert
+            result.IsSuccessfulWithNoErrors.Should().BeTrue();
+            result.Payload.Should().NotBeEmpty();
+            result.Payload.Should().HaveCount(5);
+        }
     }
 
 

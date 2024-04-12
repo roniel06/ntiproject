@@ -28,6 +28,12 @@ namespace NTI.Application.Services
 
         public Task<OperationResult<IEnumerable<CustomerDto>>> GetAllAsync()
             => _customerRepository.GetAllAsync();
+
+        public async Task<OperationResult<IEnumerable<CustomerWithExpensiveItemDto>>> GetByCustomersWithExpensiveItems()
+        {
+            return await _customerRepository.GetByCustomersWithExpensiveItems();
+        }
+
         public async Task<OperationResult<CustomerDto>> GetByIdAsync(int id)
         {
             var opResult = OperationResult<CustomerDto>.Failed();
