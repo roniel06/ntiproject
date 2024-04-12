@@ -5,7 +5,6 @@ import DataTable from "react-data-table-component"
 import { useToast } from '@chakra-ui/react'
 import { categoryEnum } from '../../utils/enums/categoryEnum'
 
-
 const ItemsPage = () => {
 
   const [items, setItems] = useState([])

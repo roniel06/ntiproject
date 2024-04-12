@@ -5,4 +5,7 @@ export class CustomerItemsService extends BaseService {
         super("/customeritems");
     }
 
+    getByItemNumberRange = async (from, to) => {
+        return await this.get(`report/${from}/${to}`);
+    }
 }

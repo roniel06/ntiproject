@@ -238,5 +238,30 @@ namespace NTI.Test.Systems.Services
             result.Payload.Should().NotBeEmpty();
         }
 
+        [Fact]
+        public async Task GetCustomerItemsByItemNumberRange_ShouldReturnAssignedCustomerItems_WithinRange()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            var customerItemsDto = fixture.Build<CustomerItemsDto>()
+            .Create();
+
+            _customerItemsRepositoryMock.Setup(x => x.GetByItemNumberRange(1, 10))
+                .ReturnsAsync(OperationResult<IEnumerable<CustomerItemsDto>>.Success(new List<CustomerItemsDto> { customerItemsDto }));
+
+            // Act
+            var result = await _sut.GetByItemNumberRange(1, 10);
+
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<OperationResult<IEnumerable<CustomerItemsDto>>>();
+            result.IsSuccessfulWithNoErrors.Should().BeTrue();
+            result.Payload.Should().NotBeEmpty();
+            result.Payload.Any(x => x.Item.ItemNumber > 0).Should().BeTrue();
+        }
+
     }
 }

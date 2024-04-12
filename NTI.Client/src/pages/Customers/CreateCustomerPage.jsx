@@ -22,7 +22,7 @@ const CreateCustomerPage = () => {
             })
             setTimeout(() => {
                 navigate("/customers")
-            }, 1000)
+            }, 500)
         }
         else {
             toast({

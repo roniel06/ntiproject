@@ -30,5 +30,16 @@ namespace NTI.Infrastructure.Repositories
                 .ToListAsync();
             return opResult.SetSucceeded(customerItemsDto);
         }
+
+        public async Task<OperationResult<IEnumerable<CustomerItemsDto>>> GetByItemNumberRange(int from, int to)
+        {
+            var opResult = OperationResult<IEnumerable<CustomerItemsDto>>.Failed();
+            var customerItemsDto = await GetQueryable()
+                .Include(x => x.Item)
+                .Where(x => x.Item.ItemNumber >= from && x.Item.ItemNumber <= to)
+                .ProjectTo<CustomerItemsDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+            return opResult.SetSucceeded(customerItemsDto);
+        }
     }
 }

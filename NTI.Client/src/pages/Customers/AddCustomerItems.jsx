@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Form, useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
     Box,
     Text,
@@ -16,6 +16,7 @@ import { CustomersService } from '../../services/customersService/CustomersServi
 import { ItemsService } from '../../services/itemsService/ItemsService'
 import DataTable from 'react-data-table-component'
 import { CustomerItemsService } from '../../services/customerItemsService/CustomerItemsService'
+
 const AddCustomerItems = () => {
 
     const [customer, setCustomer] = useState(null);
@@ -82,6 +83,7 @@ const AddCustomerItems = () => {
     }
 
     const handleSelectProduct = (e) => {
+        setSelectedItemPrice(items.find(x => x.id === parseInt(e.target.value)).defaultPrice);
         setSelectedItem(e.target.value)
     }
 
@@ -113,7 +115,6 @@ const AddCustomerItems = () => {
                 duration: 2000,
                 isClosable: true,
             });
-
         }
     }
 
@@ -127,10 +128,6 @@ const AddCustomerItems = () => {
         setIsActive(true);
     }
 
-
-
-
-
     const handleAddProduct = async () => {
         const customerItemInputModel = {
             customerId: id,
@@ -139,6 +136,7 @@ const AddCustomerItems = () => {
             price: selectedItemPrice,
             isActive: isActive
         }
+
         const service = new CustomerItemsService();
         const result = await service.create(customerItemInputModel)
         if (result.isSuccessfulWithNoErrors) {
@@ -152,7 +150,6 @@ const AddCustomerItems = () => {
             const newCustomerItems = [...customerItems, result.payload]
             filterAvailableItems(newCustomerItems, items);
             setCustomerItems(newCustomerItems)
-
         }
         else {
             toast({
@@ -163,7 +160,6 @@ const AddCustomerItems = () => {
                 isClosable: true,
             });
         }
-
     }
 
     useEffect(() => {
@@ -187,7 +183,6 @@ const AddCustomerItems = () => {
         getCustomer();
     }, [])
 
-
     return (
         <>
             <Text fontSize="xl" fontWeight="bold">Add Items To Customer</Text>
@@ -202,7 +197,6 @@ const AddCustomerItems = () => {
                         <FormLabel>Last Name</FormLabel>
                         <Input type="text" className='' value={customer?.lastName} disabled />
                     </FormControl>
-
                 </HStack>
 
                 <HStack spacing={2} mt={4}>
@@ -255,7 +249,6 @@ const AddCustomerItems = () => {
                         </button>
                     </FormControl>
                 </HStack>
-
                 <DataTable
                     columns={columns}
                     data={customerItems}

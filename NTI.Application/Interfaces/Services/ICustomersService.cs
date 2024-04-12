@@ -9,6 +9,7 @@ namespace NTI.Application.Interfaces.Services
         Task<OperationResult<CustomerDto>> UpdateAsync(int id, CustomerInputModel inputModel);
         Task<OperationResult<CustomerDto>> GetByIdAsync(int id);
         Task<OperationResult<IEnumerable<CustomerDto>>> GetAllAsync();
+        Task<OperationResult<IEnumerable<CustomerWithExpensiveItemDto>>> GetByCustomersWithExpensiveItems();
         Task<OperationResult> DeleteAsync(int id);
     }
 }

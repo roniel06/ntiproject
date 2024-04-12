@@ -7,6 +7,6 @@ namespace NTI.Application.Interfaces.Repositories
 {
     public interface ICustomersRepository : IRepository<Customer, CustomerDto, CustomerInputModel>
     {
-
+        Task<OperationResult<IEnumerable<CustomerWithExpensiveItemDto>>> GetByCustomersWithExpensiveItems();
     }
 }
