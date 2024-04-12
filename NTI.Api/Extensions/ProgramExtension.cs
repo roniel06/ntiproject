@@ -144,7 +144,7 @@ namespace NTI.Api.Extensions
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
-                builder.WithOrigins("http://localhost:5173")
+                builder.WithOrigins("http://localhost:3000")
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));
