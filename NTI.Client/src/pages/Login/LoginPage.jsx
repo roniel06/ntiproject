@@ -9,6 +9,7 @@ import {
     Button,
     Heading,
     useColorModeValue,
+    useToast
 } from '@chakra-ui/react'
 import { Formik } from 'formik'
 import { loginValidationSchema } from "../../utils/validationSchemas/loginValidationSchema"
@@ -18,11 +19,22 @@ import { AuthService } from '../../services/authService/AuthService'
 const LoginPage = () => {
 
     const navigate = useNavigate();
+    const toast = useToast();
+
     const handleOnSubmit = async (values) => {
         const service = new AuthService();
         const result = await service.login(values);
         if (result.isSuccessfulWithNoErrors) {
             navigate("/app/items")
+        }
+        else{
+            toast({
+                title: "Error",
+                description: result.errors[0],
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            })
         }
     }
     const initialValues = {
