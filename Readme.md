@@ -1,7 +1,7 @@
 ﻿# This is a Coding Challenge Project for NTI. 
 
 ## Technologies Used
-[![License: GNU](https://img.shields.io/badge/License-GNU%20GPL-blue)](https://www.gnu.org/licenses/gpl-3.0) ![](https://img.shields.io/badge/.NET_Core-blue?logo=.net) ![](https://img.shields.io/badge/Entity_Framework_Core-purple?logo=.net) ![](https://img.shields.io/badge/xUnit-orange?logo=xunit) ![](https://img.shields.io/badge/-ReactJs-61DAFB?logo=react) ![](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
+[![License: GNU](https://img.shields.io/badge/License-GNU%20GPL-blue)](https://www.gnu.org/licenses/gpl-3.0) ![](https://img.shields.io/badge/.NET_Core-blue?logo=.net) ![](https://img.shields.io/badge/Entity_Framework_Core-purple?logo=.net) ![](https://img.shields.io/badge/xUnit-orange?logo=xunit) ![](https://img.shields.io/badge/-ReactJs-61DAFB?logo=react) ![](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 - .NET 8 - A free, cross-platform, open-source framework for building modern cloud-based and internet-connected applications.
 - Entity Framework Core - A modern object-database mapper for .NET that provides a clean and elegant way to access relational databases.
 - xUnit - A free, open-source, and community-focused unit testing tool for the .NET Framework.
@@ -53,6 +53,7 @@ As an employee I want to be able to create, delete, update, and get Items, the i
  - Description
  - Default Price
  - IsActive (status)
+ 
 As an Employee I want to be able to create, delete, update, and get Customers, the customer must have:
  - Id
  - Name
