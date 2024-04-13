@@ -1,13 +1,20 @@
 
 using System.Reflection;
+using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using NTI.Application.AppContext;
 using NTI.Application.InputModels.Customers;
 using NTI.Application.InputModels.Items;
+using NTI.Application.InputModels.Login;
 using NTI.Application.Interfaces.Repositories;
 using NTI.Application.Interfaces.Services;
 using NTI.Application.Mappings.Items;
+using NTI.Application.Options;
 using NTI.Application.Services;
 using NTI.Application.Validators;
 using NTI.Infrastructure.Context;
@@ -30,6 +37,7 @@ namespace NTI.Api.Extensions
             services.AddScoped<IItemRepository, ItemsRepository>();
             services.AddScoped<ICustomersRepository, CustomersRepository>();
             services.AddScoped<ICustomerItemsRepository, CustomerItemsRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             return services;
         }
 
@@ -43,6 +51,9 @@ namespace NTI.Api.Extensions
             services.AddScoped<IItemsService, ItemsService>();
             services.AddScoped<ICustomersService, CustomersService>();
             services.AddScoped<ICustomerItemService, CustomerItemsService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ApplicationContext, ApplicationContext>();
             return services;
         }
 
@@ -81,6 +92,7 @@ namespace NTI.Api.Extensions
             services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
             services.AddScoped<IValidator<ItemInputModel>, ItemsValidator>();
             services.AddScoped<IValidator<CustomerInputModel>, CustomersValidator>();
+            services.AddScoped<IValidator<LoginInputRecord>, LoginInputValidator>();
             return services;
         }
 
@@ -106,36 +118,52 @@ namespace NTI.Api.Extensions
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 config.IncludeXmlComments(xmlPath);
 
+                config.AddSecurityDefinition("Bearer", new()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT token",
+                });
 
-                //config.AddSecurityDefinition("Bearer", new()
-                //{
-                //    Name = "Authorization",
-                //    Type = SecuritySchemeType.ApiKey,
-                //    BearerFormat = "JWT",
-                //    In = ParameterLocation.Header,
-                //    Description = "JWT token",
-                //});
-
-                //config.AddSecurityRequirement(new()
-                //{
-
-                //    {
-                //        new OpenApiSecurityScheme()
-                //        {
-                //            Reference = new()
-                //            {
-                //                Type = ReferenceType.SecurityScheme,
-                //                Id = "Bearer",
-                //            }
-                //        },
-                //        Array.Empty<string>()
-                //    }
-
-                //});
+                config.AddSecurityRequirement(new()
+                {
+                   {
+                       new OpenApiSecurityScheme()
+                       {
+                           Reference = new()
+                           {
+                               Type = ReferenceType.SecurityScheme,
+                               Id = "Bearer",
+                           }
+                       },
+                       Array.Empty<string>()
+                   }
+                });
 
 
             });
 
+            return services;
+        }
+
+        internal static IServiceCollection ConfigureAuthentication(this IServiceCollection services, WebApplicationBuilder builder)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                };
+            });
             return services;
         }
 
@@ -149,6 +177,11 @@ namespace NTI.Api.Extensions
                        .AllowAnyHeader();
             }));
 
+        }
+
+        internal static IServiceCollection ConfigureOptions(this IServiceCollection services, WebApplicationBuilder builder)
+        {
+            return services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
         }
     }
 }

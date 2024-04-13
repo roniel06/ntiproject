@@ -1,6 +1,8 @@
 import React from 'react'
+import useRequireAuthHook from '../hooks/useRequireAuthHook'
 
 const Header = () => {
+  useRequireAuthHook();
   return (
     <header className="text-gray-100 body-font">
     <div className=" bg-[#0e0e0e] mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">

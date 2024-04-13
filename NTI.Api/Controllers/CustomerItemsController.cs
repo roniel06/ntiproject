@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTI.Application.InputModels.CustomerItems;
 using NTI.Application.Interfaces.Services;
@@ -27,6 +28,7 @@ namespace NTI.Api.Controllers
         /// Get all customer items
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Getall()
         {
@@ -39,6 +41,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([Required] int id)
         {
@@ -55,6 +58,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="customerId"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("customer/{customerId}")]
         public async Task<IActionResult> GetByCustomerId([Required] int customerId)
         {
@@ -71,6 +75,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="inputModel"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CustomerItemInputModel inputModel)
         {
@@ -88,6 +93,7 @@ namespace NTI.Api.Controllers
         /// <param name="id"></param>
         /// <param name="inputModel"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([Required] int id, [FromBody] CustomerItemInputModel inputModel)
         {
@@ -105,6 +111,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([Required] int id)
         {
@@ -122,6 +129,7 @@ namespace NTI.Api.Controllers
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("report/{from}/{to}")]
         public async Task<IActionResult> GetByItemNumberRange([Required] int from, [Required] int to)
         {

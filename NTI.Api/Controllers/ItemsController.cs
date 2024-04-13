@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTI.Application.InputModels.Items;
 using NTI.Application.Interfaces.Services;
@@ -24,6 +25,7 @@ namespace NTI.Api.Controllers
         /// Gets all items
         /// </summary>
         /// <returns>A List of items</returns>
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -36,6 +38,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -48,6 +51,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ItemInputModel item)
         {
@@ -66,6 +70,7 @@ namespace NTI.Api.Controllers
         /// <param name="id">The id of the record</param>
         /// <param name="item"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([Required] int id, [FromBody] ItemInputModel item)
         {
@@ -82,6 +87,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="itemNumber">The item number</param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("ByItemNumber/{itemNumber}")]
         public async Task<IActionResult> GetByItemNumber([Required] int itemNumber)
         {
@@ -99,6 +105,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([Required] int id)
         {

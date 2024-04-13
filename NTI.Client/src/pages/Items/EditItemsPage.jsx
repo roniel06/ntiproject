@@ -15,7 +15,6 @@ const EditItemsPage = () => {
             const service = new ItemsService()
             const result = await service.get(id)
             if (result.isSuccessfulWithNoErrors) {
-                console.log(result.payload)
                 setItem(result.payload)
                 return;
             }
@@ -39,7 +38,7 @@ const EditItemsPage = () => {
                 isClosable: true,
             })
             setTimeout(() => {
-                navigate('/items')
+                navigate('/app/items')
             }, 500)
         }
         else {

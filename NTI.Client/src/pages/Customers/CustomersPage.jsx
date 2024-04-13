@@ -43,8 +43,8 @@ const CustomersPage = () => {
             grow:2,   
             cell: row => (
                 <>
-                    <button className='bg-green-400 m-2 p-3 text-white text-sm rounded' onClick={() => navigate(`/customers/${row.id}/addItems`)}>Items</button>
-                    <button className="bg-orange-400 m-2 p-3 text-white text-sm rounded" onClick={() => navigate(`/customers/edit/${row.id}`)}>Edit</button>
+                    <button className='bg-green-400 m-2 p-3 text-white text-sm rounded' onClick={() => navigate(`/app/customers/${row.id}/addItems`)}>Items</button>
+                    <button className="bg-orange-400 m-2 p-3 text-white text-sm rounded" onClick={() => navigate(`/app/customers/edit/${row.id}`)}>Edit</button>
                     <button onClick={(e) => {
                         if (!confirm("Are you sure you want to delete this record?")) {
                             e.preventDefault()
@@ -89,7 +89,7 @@ const CustomersPage = () => {
             <div className="flex flex-col items-end">
                 <button
                     className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded'
-                    onClick={() => navigate("/customers/create")}>
+                    onClick={() => navigate("/app/customers/create")}>
                     Create Customer
                 </button>
             </div>

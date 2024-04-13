@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using NTI.Application.AppContext;
 using NTI.Infrastructure.Context;
 
 namespace NTI.Test.Helpers
@@ -10,7 +12,7 @@ namespace NTI.Test.Helpers
         {
             var options = new DbContextOptionsBuilder<ProjectDbContext>()
                .UseSqlite("DataSource=:memory:").Options;
-
+               
             var context = new ProjectDbContext(options);
             context.Database.OpenConnection();
             context.Database.EnsureCreated();
@@ -23,6 +25,6 @@ namespace NTI.Test.Helpers
             context.Dispose();
         }
 
-     
+
     }
 }

@@ -9,50 +9,62 @@ import EditCustomerPage from "../pages/Customers/EditCustomerPage";
 import AddCustomerItems from "../pages/Customers/AddCustomerItems";
 import ReportsPage from "../pages/Reports/ReportsPage";
 import CustomersWithExpensiveItems from "../pages/Reports/CustomersWithExpensiveItems";
+import LoginPage from "../pages/Login/LoginPage";
+import SignUpPage from "../pages/SignUp/SignUpPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
+        element: <LoginPage />,
+    },
+    {
+        path: "/signup",
+        element: <SignUpPage />
+    },
+    {
+        path: "/app",
         element: <Main />,
         children: [
+
             {
-                path: "/items",
+                path: "items",
                 element: <ItemsPage />
             },
             {
-                path: "/items/create",
+                path: "items/create",
                 element: <CreateItemsPage />
             },
             {
-                path: "/items/edit/:id",
+                path: "items/edit/:id",
                 element: <EditItemsPage />
             },
             {
-                path: "/customers",
+                path: "customers",
                 element: <CustomersPage />
             },
             {
-                path: "/customers/create",
+                path: "customers/create",
                 element: <CreateCustomerPage />
             },
             {
-                path: "/customers/edit/:id",
+                path: "customers/edit/:id",
                 element: <EditCustomerPage />
             },
             {
-                path: "/customers/:id/addItems/",
+                path: "customers/:id/addItems/",
                 element: <AddCustomerItems />
             },
             {
-                path: "/reports",
+                path: "reports",
                 element: <ReportsPage />
             },
             {
-                path: "/reports/expensive",
+                path: "reports/expensive",
                 element: <CustomersWithExpensiveItems />
             }
 
         ]
     }
+
 ])
 export default router;
