@@ -42,7 +42,9 @@ docker-compose up
 ### User Story:
 
 As an employee, I want to be able to get registered so i can login into the system.
-  A Form should ask for my name, email and password.
+
+A Form should ask for my name, email and password.
+
 As an employee I want to be able to login into the system, a form should ask me for the email and the password that was previously registered.
 
 As an employee I want to be able to create, delete, update, and get Items, the items must have
