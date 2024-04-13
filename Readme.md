@@ -26,11 +26,12 @@ git clone https://github.com/roniel06/ntiproject.git
   ```bash
 cd ntiproject
 ```
-3. Run the following command to setup the Docker Containers:
+3. Make sure your Docker Engine is running.
+4. Run the following command to setup the Docker Containers:
 ```bash
 docker-compose up
    ```
-4. Wait until the container is mounted:
+5. Wait until the container is mounted:
 
 ## Usage:
 1. Once the containers are up and running you can navigate the SPA project going through
@@ -39,6 +40,11 @@ docker-compose up
    [http:localhost:8081/swagger](http:localhost:8081/swagger)
  
 ### User Story:
+
+As an employee, I want to be able to get registered so i can login into the system.
+  A Form should ask for my name, email and password.
+As an employee I want to be able to login into the system, a form should ask me for the email and the password that was previously registered.
+
 As an employee I want to be able to create, delete, update, and get Items, the items must have
  - Id
  - Item Number
