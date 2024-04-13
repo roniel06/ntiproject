@@ -4,6 +4,15 @@ const api = axios.create({
     baseURL: import.meta.env.VITE_REACT_API_URL
 })
 
+api.interceptors.request.use((config) => {
+    console.log(config)
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 const get = async (url, params = {}) => {
     try {
         const response = await api.get(url, { params })

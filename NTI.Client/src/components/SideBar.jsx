@@ -4,24 +4,26 @@ import { MdOutlineDashboard, MdLibraryBooks } from "react-icons/md";
 import { FiUsers, FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom"
+import useRequireAuthHook from "../hooks/useRequireAuthHook";
 
 
 const SideBar = () => {
+    useRequireAuthHook();
     const menus = [
         {
             name: "Items", link: "/", icon: HiInbox, subMenus: [
-                { name: "List of Items", link: "/items" },
+                { name: "List of Items", link: "/app/items" },
             ]
         },
         {
             name: "Customers", link: "/", icon: FiUsers, subMenus: [
-                { name: "List of Customers", link: "/customers" }
+                { name: "List of Customers", link: "/app/customers" }
             ]
         },
         {
             name: "Reports", link: "/", icon: MdLibraryBooks, subMenus: [
-                { name: "Customer Items By Item Number", link: "/reports" },
-                { name: "Customer with Expensive items", link: "/reports/expensive" }
+                { name: "Customer Items By Item Number", link: "/app/reports" },
+                { name: "Customer with Expensive items", link: "/app/reports/expensive" }
             ]
         }
 

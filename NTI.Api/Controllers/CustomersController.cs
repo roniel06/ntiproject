@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTI.Application.InputModels.Customers;
 using NTI.Application.Interfaces.Services;
@@ -26,6 +27,7 @@ namespace NTI.Api.Controllers
         /// Gets all the customers.
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -42,6 +44,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -59,6 +62,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="inputModel"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CustomerInputModel inputModel)
         {
@@ -79,6 +83,7 @@ namespace NTI.Api.Controllers
         /// <param name="id"></param>
         /// <param name="inputModel"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CustomerInputModel inputModel)
         {
@@ -98,6 +103,7 @@ namespace NTI.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -113,6 +119,7 @@ namespace NTI.Api.Controllers
         /// Gets the customers with expensive items.
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("expensive-items")]
         public async Task<IActionResult> GetByCustomersWithExpensiveItems()
         {

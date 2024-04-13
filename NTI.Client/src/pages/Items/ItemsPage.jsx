@@ -39,7 +39,7 @@ const ItemsPage = () => {
       name: "Options",
       cell: row => (
         <>
-          <button className="bg-orange-400 m-2 p-3 text-white text-sm rounded" onClick={() => navigate(`/items/edit/${row.id}`)}>Edit</button>
+          <button className="bg-orange-400 m-2 p-3 text-white text-sm rounded" onClick={() => navigate(`/app/items/edit/${row.id}`)}>Edit</button>
           <button onClick={(e) => {
             if (!confirm("Are you sure you want to delete this record?")) {
               e.preventDefault()

@@ -21,7 +21,7 @@ const CreateCustomerPage = () => {
                 isClosable: true,
             })
             setTimeout(() => {
-                navigate("/customers")
+                navigate("/app/customers")
             }, 500)
         }
         else {
