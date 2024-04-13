@@ -35,7 +35,6 @@ services:
     depends_on:
       items.database:
         condition: service_healthy
-        restart: false
 
   nti.client:
     container_name: nti.client
